@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POKEMON-API</title>
+</head>
+<body style="margin:0;">
+    <header style="background-color: thistle; margin:10px;">
+        <h1>GET YOUR POKEMON</h1>
+        <input type="submit" value="Find your pokemon" onclick="masa()" id="yoi">
+        <p>YOUR POKEMON RIGHT HERE</p>
+        <div id="container" style="margin:0 30px;">
+
+        </div>
+    </header>
+    <script>
+     function masa() {
+           
+        fetch('https://pokeapi.co/api/v2/pokemon?limit=30').then (
+      function(response){
+        if (response.status != 200) {
+          console.log("Oppps..." + response.status)
+          return
+        }
+        response.json().then(function(data) {
+            var pokemon = data.results
+            console.log(pokemon)
+            pokemon.forEach(poke => {
+                pika = poke.url
+                
+                form(pika)
+                
+            });
+            
+        })
+        
+      }
+        
+      )
+      function detail(url) {
+        fetch(url).then(function(response){
+        response.json().then(function(data) {
+          console.log(data.pokemon.name)
+          document.getElementById('container').insertAdjacentHTML('beforeend',
+          `<div style='height:240px; width:200px; text-align:center; background-color:#ebdc0f; margin:25px; flex-wrap:wrap; float:left;'>
+          <h1>${data.id} ${data.pokemon.name}</h1>
+          <img src="${data.sprites.front_default}">
+          <h1>Type  ${data.types[0].type.name}</h1>
+          </div>`)
+          
+        })
+    })}
+      function form(url){
+        fetch(url).then(function(response){
+            response.json().then(function(info) {
+                var poke = info.forms[0].url
+                detail(poke)
+            })
+        })}
+    
+     }
+    </script>
+</body>
+</html>
